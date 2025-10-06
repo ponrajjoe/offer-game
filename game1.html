@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rock Paper Scissors Game</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    }
+
+    .container {
+      padding: 2rem 3rem;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      max-width: 700px;
+      width: 90%;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 1.5rem;
+      font-size: 2.5rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    #timer {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #ff5722;
+      background: rgba(255, 87, 34, 0.1);
+      padding: 8px 15px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    .score_board {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #333;
+      background: rgba(0, 0, 0, 0.05);
+      padding: 15px;
+      border-radius: 15px;
+    }
+
+    .result_field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 25px 0;
+    }
+
+    .result_image {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .result_image i {
+      width: 120px;
+      height: 120px;
+      font-size: 100px;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user_result {
+      transform: rotate(90deg);
+    }
+
+    .cpu_result {
+      transform: rotate(-90deg) rotateY(180deg);
+    }
+
+    .result {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+      margin-bottom: 1rem;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .option_container {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .option {
+      text-align: center;
+      cursor: pointer;
+      padding: 15px;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .option:hover {
+      background: rgba(0, 0, 0, 0.08);
+      transform: translateY(-5px);
+    }
+
+    .option.active {
+      background: rgba(37, 117, 252, 0.15);
+      box-shadow: 0 5px 15px rgba(37, 117, 252, 0.3);
+    }
+
+    .option i {
+      color: #333;
+      transition: all 0.3s ease;
+    }
+
+    .option:hover i,
+    .option.active i {
+      color: #2575fc;
+      transform: scale(1.2);
+    }
+
+    .option h6 {
+      text-align: center;
+      font-size: 1.1rem;
+      margin-top: 0.8rem;
+      color: #333;
+      font-weight: 600;
+    }
+
+    #gameOverMessage {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 20px 0;
+      color: #ff5722;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    #playAgainBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 35px;
+      font-size: 1.2rem;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+    }
+
+    #playAgainBtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(37, 117, 252, 0.6);
+    }
+
+    .bounce {
+      animation: bounce 0.4s ease;
+    }
+
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+
+    .shake {
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .handshake {
+      animation: handshake 0.8s ease-in-out;
+    }
+
+    @keyframes handshake {
+      0%, 100% { transform: rotate(0); }
+      25% { transform: rotate(15deg); }
+      50% { transform: rotate(-15deg); }
+      75% { transform: rotate(10deg); }
+    }
+
+    .user_result.handshake {
+      animation: userHandshake 0.8s ease-in-out;
+    }
+
+    @keyframes userHandshake {
+      0%, 100% { transform: rotate(90deg); }
+      25% { transform: rotate(105deg); }
+      50% { transform: rotate(75deg); }
+      75% { transform: rotate(100deg); }
+    }
+
+    .cpu_result.handshake {
+      animation: cpuHandshake 0.8s ease-in-out;
+    }
+
+    @keyframes cpuHandshake {
+      0%, 100% { transform: rotate(-90deg) rotateY(180deg); }
+      25% { transform: rotate(-105deg) rotateY(180deg); }
+      50% { transform: rotate(-75deg) rotateY(180deg); }
+      75% { transform: rotate(-100deg) rotateY(180deg); }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 1.5rem;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .result_image {
+        gap: 1.5rem;
+      }
+      
+      .result_image i {
+        font-size: 80px;
+        width: 80px;
+        height: 80px;
+      }
+      
+      .option_container {
+        gap: 1.5rem;
+      }
+      
+      .score_board {
+        flex-direction: column;
+        gap: 0.8rem;
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="container">
+    <h1>Rock Paper Scissors</h1>
+    
+    <!-- Timer -->
+    <div id="timer">Time Left: <span id="timeLeft">30</span>s</div>
+
+    <!-- Score Board -->
+    <div class="score_board">
+      <div>User: <span id="userScore">0</span></div>
+      <div>CPU: <span id="cpuScore">0</span></div>
+      <div>Draws: <span id="drawScore">0</span></div>
+    </div>
+
+    <!-- Result Area -->
+    <div class="result_field">
+      <div class="result_image">
+        <span class="user_result">
+          <i class="fa-solid fa-hand-back-fist"></i>
+        </span>
+        <span class="cpu_result">
+          <i class="fa-solid fa-hand-back-fist"></i>
+        </span>
+      </div>
+      <div class="result">Let's go..!</div>
+    </div>
+
+    <!-- Option Buttons -->
+    <div class="option_container">
+      <div class="option" data-choice="p">
+        <i class="fas fa-hand-paper"></i>
+        <h6>Paper</h6>
+      </div>
+      <div class="option" data-choice="r">
+        <i class="fa-solid fa-hand-rock"></i>
+        <h6>Rock</h6>
+      </div>
+      <div class="option" data-choice="s">
+        <i class="fa-solid fa-hand-scissors"></i>
+        <h6>Scissors</h6>
+      </div>
+    </div>
+
+    <!-- End Message -->
+    <div id="gameOverMessage" class="hidden">Game Over</div>
+
+    <!-- Play Again Button -->
+    <button id="playAgainBtn" class="hidden">Play Again</button>
+  </section>
+
+  <script>
+    const userResult = document.querySelector(".user_result i");
+    const cpuResult = document.querySelector(".cpu_result i");
+    const result = document.querySelector(".result");
+
+    const optionButtons = document.querySelectorAll(".option");
+    const userScoreEl = document.getElementById("userScore");
+    const cpuScoreEl = document.getElementById("cpuScore");
+    const drawScoreEl = document.getElementById("drawScore");
+    const gameOverMessage = document.getElementById("gameOverMessage");
+    const timeLeftEl = document.getElementById("timeLeft");
+    const playAgainBtn = document.getElementById("playAgainBtn");
+
+    let userScore = 0;
+    let cpuScore = 0;
+    let drawScore = 0;
+    let gameEnded = false;
+    let timer;
+    let timeLeft = 30;
+
+    // Start timer on load
+    startTimer();
+
+    // Game choices
+    const choices = {
+      r: "fa-solid fa-hand-rock",
+      p: "fas fa-hand-paper",
+      s: "fa-solid fa-hand-scissors"
+    };
+
+    // Event Listeners
+    optionButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (gameEnded) return;
+
+        // Remove active class and add to current button
+        optionButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const userChoice = btn.dataset.choice;
+        const userIcon = choices[userChoice];
+
+        // Set user icon and add shake animation
+        userResult.className = userIcon;
+        userResult.parentElement.classList.add("shake");
+        setTimeout(() => userResult.parentElement.classList.remove("shake"), 500);
+
+        // CPU Random Choice and shake animation
+        const cpuKeys = Object.keys(choices);
+        const cpuChoice = cpuKeys[Math.floor(Math.random() * 3)];
+        cpuResult.className = choices[cpuChoice];
+        cpuResult.parentElement.classList.add("shake");
+        setTimeout(() => cpuResult.parentElement.classList.remove("shake"), 500);
+
+        // Determine Outcome
+        const matchup = userChoice + cpuChoice;
+        const outcomes = {
+          rr: "Draw", rp: "CPU Wins", rs: "User Wins",
+          pr: "User Wins", pp: "Draw", ps: "CPU Wins",
+          sr: "CPU Wins", sp: "User Wins", ss: "Draw"
+        };
+
+        const outcome = outcomes[matchup];
+        result.textContent = outcome;
+
+        // Update Score
+        if (outcome === "User Wins") {
+          userScore++;
+          userScoreEl.textContent = userScore;
+          animateScore(userScoreEl);
+        } else if (outcome === "CPU Wins") {
+          cpuScore++;
+          cpuScoreEl.textContent = cpuScore;
+          animateScore(cpuScoreEl);
+        } else {
+          drawScore++;
+          drawScoreEl.textContent = drawScore;
+          animateScore(drawScoreEl);
+          // Trigger handshake animation for draws
+          triggerHandshake();
+        }
+
+        // End game if score > 3
+        if (userScore >= 3 || cpuScore >= 3) {
+          endGame();
+        }
+      });
+    });
+
+    // Play Again Button
+    playAgainBtn.addEventListener("click", resetGame);
+
+    // Animate score change
+    function animateScore(el) {
+      el.classList.add("bounce");
+      setTimeout(() => el.classList.remove("bounce"), 400);
+    }
+
+    // Handshake animation
+    function triggerHandshake() {
+      userResult.parentElement.classList.add("handshake");
+      cpuResult.parentElement.classList.add("handshake");
+      
+      // Remove class after animation to allow re-trigger
+      setTimeout(() => {
+        userResult.parentElement.classList.remove("handshake");
+        cpuResult.parentElement.classList.remove("handshake");
+      }, 800);
+    }
+
+    // End Game
+    function endGame() {
+      clearInterval(timer);
+      gameEnded = true;
+
+      let message = "";
+      if (userScore === cpuScore) {
+        message = "⚖️ It's a Draw!";
+      } else if (userScore > cpuScore) {
+        message = "🎉 You Win the Game!";
+      } else {
+        message = "💻 CPU Wins the Game!";
+      }
+
+      gameOverMessage.textContent = message;
+      gameOverMessage.classList.remove("hidden");
+      playAgainBtn.classList.remove("hidden");
+    }
+
+    // Reset Game
+    function resetGame() {
+      userScore = 0;
+      cpuScore = 0;
+      drawScore = 0;
+      gameEnded = false;
+      
+      userScoreEl.textContent = userScore;
+      cpuScoreEl.textContent = cpuScore;
+      drawScoreEl.textContent = drawScore;
+      
+      userResult.className = "fa-solid fa-hand-back-fist";
+      cpuResult.className = "fa-solid fa-hand-back-fist";
+      
+      result.textContent = "Let's go..!";
+      
+      gameOverMessage.classList.add("hidden");
+      playAgainBtn.classList.add("hidden");
+      
+      optionButtons.forEach(b => b.classList.remove("active"));
+      
+      clearInterval(timer);
+      startTimer();
+    }
+
+    // Timer
+    function startTimer() {
+      timeLeft = 30;
+      timeLeftEl.textContent = timeLeft;
+
+      timer = setInterval(() => {
+        timeLeft--;
+        timeLeftEl.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          gameEnded = true;
+          result.textContent = "⏰ Time's up!";
+          endGame();
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

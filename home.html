@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smooth Home UI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #91f79f; /* Vibrant purple */
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      position: relative;
+      width: 90%;
+      max-width: 400px;
+      height: 600px;
+    }
+
+    .shape,
+    .circle,
+    .pill {
+      position: absolute;
+      border-radius: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .square1 {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background-image: url('https://th.bing.com/th/id/OIP.IJtiznc3v0cmrSx3sjl_1AHaGH?w=212&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #E6A5F7; /* fallback color */
+  top: 50px;
+  left: 20px;
+  border-radius: 20px; /* to keep consistent with others */
+}
+
+
+   .square2 {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background-image: url('https://img.freepik.com/free-vector/coming-soon-cartoon-pop-art-style_530597-147.jpg?w=2000');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #C369E6; /* fallback color */
+  top: 50px;
+  right: 20px;
+  border-radius: 20px;
+}
+
+
+   .square3 {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  background-image: url('https://th.bing.com/th/id/OIP.EfFr_jf9hM8RT1B65BoFrgHaH6?w=156&h=184&c=7&r=0&o=7&cb=12&pid=1.7&rm=3');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #FF5A5F; /* fallback */
+  bottom: 120px;
+  left: 20px;
+  border-radius: 20px;
+}
+
+    .circle {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background-image: url('https://tse2.mm.bing.net/th/id/OIP.-CJbJrEiDRamNN8IfoR_ugHaHa?cb=12&w=1588&h=1588&rs=1&pid=ImgDetMain&o=7&rm=3');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  top: 140px;
+  left: 100px;
+}
+
+.pill {
+  position: absolute;
+  width: 140px;
+  height: 70px;
+  background-image: url('https://tse3.mm.bing.net/th/id/OIP.2tA5CgYeB5yaMDLx_1mLHwAAAA?cb=12&pid=ImgDet&w=182&h=130&c=7&o=7&rm=3');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 40px;
+  bottom: 80px;
+  right: 20px;
+}
+
+   
+   
+
+    .star {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 40px;
+      color: black;
+      transition: transform 0.4s ease;
+      cursor: pointer;
+    }
+
+    /* Hover effects (optional) */
+    .shape:hover,
+    .circle:hover,
+    .pill:hover,
+    .star:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+  
+ <a href="game2.html" style="text-decoration: none;">
+<div class="shape square2"></div>
+
+</a>
+
+    <a href="main game.html" style="text-decoration: none;">
+ <div class="circle"></div>
+</a>
+    
+    
+     <a href="game3.html" style="text-decoration: none;">
+  <div class="shape square3"></div>
+    <a href="game1.html" style="text-decoration: none;">
+  <div class="shape square1"></div>
+</a>
+    <a href="time.html" style="text-decoration: none;">
+  <div class="pill"></div>
+</a>
+
+   <!-- <div class="star">✴</div>
+  </div>-->
+  <script>
+    // Optional: smooth scale on click
+    const interactiveElements = document.querySelectorAll('.shape, .circle, .pill, .star');
+
+    interactiveElements.forEach(el => {
+      el.addEventListener('click', () => {
+        el.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+          el.style.transform = 'scale(1)';
+        }, 200);
+      });
+    });
+  </script>
+
+</body>
+</html>

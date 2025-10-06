@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Beat Timer Game - 70x Speed</title>
+  <style>
+    body {
+      background-color: black;
+      color: red;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+    }
+
+    #timer {
+      font-size: 100px;
+      letter-spacing: 10px;
+      padding: 20px 60px;
+      border: 5px solid #222;
+      background-color: black;
+      border-radius: 10px;
+      box-shadow: 0 0 30px red;
+    }
+
+    #startPause {
+      margin-top: 40px;
+      padding: 30px 40px;
+      font-size: 28px;
+      background-color: yellow;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    #startPause:active {
+      background-color: gold;
+    }
+
+    #message {
+      margin-top: 30px;
+      font-size: 36px;
+      color: lime;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="timer">00:00</div>
+  <button id="startPause">Start</button>
+  <div id="message"></div>
+
+  <script>
+    const timerDisplay = document.getElementById("timer");
+    const startPauseBtn = document.getElementById("startPause");
+    const message = document.getElementById("message");
+
+    let timeElapsed = 0; // in milliseconds
+    const targetTime = 10 * 60 * 1000; // 10 minutes in ms (600000)
+    const speedMultiplier = 70; // 🔥 70x speed
+    const maxTime = targetTime / speedMultiplier + 5000; // Run ~15 seconds max
+
+    let timerRunning = false;
+    let lastUpdateTime = null;
+    let animationFrameId = null;
+
+    function formatTime(ms) {
+      const totalSeconds = Math.floor(ms / 1000);
+      const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+      const seconds = String(totalSeconds % 60).padStart(2, '0');
+      return `${minutes}:${seconds}`;
+    }
+
+    function updateTimer() {
+      const now = Date.now();
+      const delta = now - lastUpdateTime;
+      lastUpdateTime = now;
+
+      timeElapsed += delta * speedMultiplier;
+
+      if (timeElapsed >= targetTime + 60 * 1000) {
+        timerRunning = false;
+        cancelAnimationFrame(animationFrameId);
+        message.textContent = "Too Late! Try Again!";
+        startPauseBtn.textContent = "Start";
+        return;
+      }
+
+      timerDisplay.textContent = formatTime(timeElapsed);
+      animationFrameId = requestAnimationFrame(updateTimer);
+    }
+
+    startPauseBtn.addEventListener("click", () => {
+      if (!timerRunning) {
+        if (timeElapsed === 0 || timeElapsed >= targetTime + 60000) {
+          timeElapsed = 0;
+          message.textContent = "";
+        }
+        timerRunning = true;
+        lastUpdateTime = Date.now();
+        animationFrameId = requestAnimationFrame(updateTimer);
+        startPauseBtn.textContent = "Pause";
+      } else {
+        timerRunning = false;
+        cancelAnimationFrame(animationFrameId);
+        startPauseBtn.textContent = "Start";
+
+        const timeDiff = Math.abs(timeElapsed - targetTime);
+        if (timeDiff <= 500) {
+          message.textContent = "🎉 YOU WIN!";
+        } else {
+          message.textContent = "❌ Try Again!";
+        }
+      }
+    });
+
+    // Initialize display
+    timerDisplay.textContent = formatTime(0);
+  </script>
+
+</body>
+</html>
